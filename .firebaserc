@@ -1,0 +1,9 @@
+{
+  "projects": {
+    "default": "kpu-ayaya",
+    "kpu-ayaya": "kpu-ayaya"
+  },
+  "targets": {},
+  "etags": {},
+  "dataconnectEmulatorConfig": {}
+}
