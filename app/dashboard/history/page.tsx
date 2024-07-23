@@ -1,22 +1,20 @@
+/**
+ * v0 by Vercel.
+ * @see https://v0.dev/t/gVMgIo22CNa
+ * Documentation: https://v0.dev/docs#integrating-generated-code-into-your-nextjs-app
+ */
 "use client";
-
-import { Button } from "@/components/ui/button";
+import Link from "next/link";
 import {
   DropdownMenu,
   DropdownMenuTrigger,
   DropdownMenuContent,
   DropdownMenuLabel,
   DropdownMenuSeparator,
-  DropdownMenuItem,
+  DropdownMenuCheckboxItem,
 } from "@/components/ui/dropdown-menu";
-import {
-  Card,
-  CardHeader,
-  CardTitle,
-  CardDescription,
-  CardContent,
-  CardFooter,
-} from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
 import {
   Table,
   TableHeader,
@@ -25,169 +23,159 @@ import {
   TableBody,
   TableCell,
 } from "@/components/ui/table";
-import { Badge } from "@/components/ui/badge";
-import { CartesianGrid, XAxis, Bar, BarChart, Line, LineChart } from "recharts";
-import {
-  ChartTooltipContent,
-  ChartTooltip,
-  ChartContainer,
-} from "@/components/ui/chart";
-
+import { Progress } from "@/components/ui/progress";
 import SideNav from "@/components/dashboard/side-nav";
 import Header from "@/components/dashboard/header";
+import Image from "next/image";
+import { DeleteInvoice, UpdateInvoice } from "@/components/buttons";
 
 export default function Component() {
   return (
-    <div className="flex min-h-screen w-full bg-muted/40">
+    <div className="flex flex-col min-h-screen w-full">
       <SideNav />
+      <Header />
 
-      <div className="flex flex-col sm:gap-4 sm:py-4 sm:pl-14">
-        <Header />
+      <div className="flex-1 sm:ml-10">
+        <div>
+          <div className="flex flex-col gap-6 p-4 md:p-6">
+            <div className="flex items-center justify-between">
+              <h1 className="text-2xl font-bold ml-2">Total Progress</h1>
 
-        <main className="grid flex-1 items-start gap-4 p-4 sm:px-6 sm:py-0 md:gap-8">
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 justify-items-center">
-            <Card x-chunk="dashboard-01-chunk-0">
-              <CardHeader>
-                <CardTitle>Total Users</CardTitle>
-                <CardDescription>
-                  The total number of registered users.
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="text-4xl font-bold">1,234</div>
-              </CardContent>
-              <CardFooter>
-                <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                  <TrendingUpIcon className="h-4 w-4 text-green-500" />
-                  <span>+5.2% this month</span>
+              <div className="gap-1">
+                <Link href={"/dashboard/history/create"}>
+                  <Button size="sm" className="h-8  gap-1 mx-2 bg-blue-600">
+                    <AddIcon className="h-4 w-4" />
+                    <span className="hidden md:inline text-white">Add</span>
+                  </Button>
+                </Link>
+
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Button variant="outline" size="sm" className="h-8 gap-1">
+                      <FilterIcon className="h-4 w-4" />
+                      <span className="hidden md:inline">Filter</span>
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent align="end">
+                    <DropdownMenuLabel>Filter by</DropdownMenuLabel>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuCheckboxItem checked>
+                      All Projects
+                    </DropdownMenuCheckboxItem>
+                    <DropdownMenuCheckboxItem>
+                      In Progress
+                    </DropdownMenuCheckboxItem>
+                    <DropdownMenuCheckboxItem>
+                      Completed
+                    </DropdownMenuCheckboxItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              </div>
+            </div>
+
+            {/* Content di Mobile */}
+            <div className="mt-6 flow-root">
+              <div className="inline-block min-w-full align-middle">
+                <div className="rounded-lg bg-gray-50 p-2 md:pt-0">
+                  <div className="md:hidden">
+                    {/* {invoices?.map((invoice) => ( */}
+                    <div
+                      key="12"
+                      className="mb-2 w-full rounded-md bg-white p-4"
+                    >
+                      <div className="flex items-center justify-between border-b pb-4">
+                        <div>
+                          <div className="mb-2 flex items-center">
+                            <p>Nama: Ceb</p>
+                          </div>
+                          <p className="text-sm text-gray-500">halo @email</p>
+                        </div>
+                      </div>
+                      <div className="flex w-full items-center justify-between pt-4">
+                        <div>
+                          <p className="text-xl font-medium">1200</p>
+                          <p>12 Jun 2024</p>
+                        </div>
+                        <div className="flex justify-end gap-2">
+                          <UpdateInvoice id="12" />
+                          <DeleteInvoice id="12" />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Content di Desktop */}
+                  <table className="hidden min-w-full text-gray-900 md:table">
+                    <thead className="rounded-lg text-left text-sm font-normal">
+                      <tr>
+                        <th
+                          scope="col"
+                          className="px-4 py-5 font-medium sm:pl-6"
+                        >
+                          Customer
+                        </th>
+                        <th scope="col" className="px-3 py-5 font-medium">
+                          Email
+                        </th>
+                        <th scope="col" className="px-3 py-5 font-medium">
+                          Amount
+                        </th>
+                        <th scope="col" className="px-3 py-5 font-medium">
+                          Date
+                        </th>
+                        <th scope="col" className="px-3 py-5 font-medium">
+                          Status
+                        </th>
+                        <th scope="col" className="relative py-3 pl-6 pr-3">
+                          <span className="sr-only">Edit</span>
+                        </th>
+                      </tr>
+                    </thead>
+
+                    <tbody className="bg-white">
+                      {/* {invoices?.map((invoice) => ( */}
+                      <tr
+                        key="12"
+                        className="w-full border-b py-3 text-sm last-of-type:border-none [&:first-child>td:first-child]:rounded-tl-lg [&:first-child>td:last-child]:rounded-tr-lg [&:last-child>td:first-child]:rounded-bl-lg [&:last-child>td:last-child]:rounded-br-lg"
+                      >
+                        <td className="whitespace-nowrap py-3 pl-6 pr-3">
+                          <div className="flex items-center gap-3">
+                            {/* <Image
+                                src={invoice.image_url}
+                                className="rounded-full"
+                                width={28}
+                                height={28}
+                                alt={`${invoice.name}'s profile picture`}
+                              /> */}
+                            <p>Nama: Ceb</p>
+                          </div>
+                        </td>
+                        <td className="whitespace-nowrap px-3 py-3">Email</td>
+                        <td className="whitespace-nowrap px-3 py-3">2000</td>
+                        <td className="whitespace-nowrap px-3 py-3">
+                          12 Juni 2024
+                        </td>
+                        <td className="whitespace-nowrap py-3 pl-6 pr-3">
+                          <div className="flex justify-end gap-3">
+                            <UpdateInvoice id={"12"} />
+                            <DeleteInvoice id={"12"} />
+                          </div>
+                        </td>
+                      </tr>
+                      {/* ))} */}
+                    </tbody>
+                  </table>
                 </div>
-              </CardFooter>
-            </Card>
-            <Card x-chunk="dashboard-01-chunk-1">
-              <CardHeader>
-                <CardTitle>Total Products</CardTitle>
-                <CardDescription>
-                  The total number of products in the catalog.
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="text-4xl font-bold">432</div>
-              </CardContent>
-              <CardFooter>
-                <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                  <TrendingUpIcon className="h-4 w-4 text-green-500" />
-                  <span>+3.1% this month</span>
-                </div>
-              </CardFooter>
-            </Card>
+              </div>
+            </div>
           </div>
-          <Card x-chunk="dashboard-01-chunk-7">
-            <CardHeader>
-              <CardTitle>Recent Orders</CardTitle>
-              <CardDescription>
-                The latest orders placed by customers.
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <Table>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead>Order</TableHead>
-                    <TableHead>Customer</TableHead>
-                    <TableHead className="hidden md:table-cell">Date</TableHead>
-                    <TableHead className="text-right">Total</TableHead>
-                    <TableHead className="hidden sm:table-cell">
-                      Status
-                    </TableHead>
-                    <TableHead className="text-right">Actions</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  <TableRow>
-                    <TableCell className="font-medium">#3210</TableCell>
-                    <TableCell>Olivia Martin</TableCell>
-                    <TableCell className="hidden md:table-cell">
-                      February 20, 2022
-                    </TableCell>
-                    <TableCell className="text-right">$42.25</TableCell>
-                    <TableCell className="hidden sm:table-cell">
-                      <Badge variant="secondary">Shipped</Badge>
-                    </TableCell>
-                    <TableCell className="text-right">
-                      <DropdownMenu>
-                        <DropdownMenuTrigger asChild>
-                          <Button variant="ghost" size="icon">
-                            <MoveHorizontalIcon className="w-4 h-4" />
-                            <span className="sr-only">Actions</span>
-                          </Button>
-                        </DropdownMenuTrigger>
-                        <DropdownMenuContent align="end">
-                          <DropdownMenuItem>View order</DropdownMenuItem>
-                          <DropdownMenuItem>Customer details</DropdownMenuItem>
-                        </DropdownMenuContent>
-                      </DropdownMenu>
-                    </TableCell>
-                  </TableRow>
-                  <TableRow>
-                    <TableCell className="font-medium">#3209</TableCell>
-                    <TableCell>Ava Johnson</TableCell>
-                    <TableCell className="hidden md:table-cell">
-                      January 5, 2022
-                    </TableCell>
-                  </TableRow>
-                </TableBody>
-              </Table>
-            </CardContent>
-          </Card>
-        </main>
+        </div>
       </div>
     </div>
   );
 }
 
-function BarchartChart(props: { className?: string }) {
-  return (
-    <div {...props}>
-      <ChartContainer
-        config={{
-          desktop: {
-            label: "Desktop",
-            color: "hsl(var(--chart-1))",
-          },
-        }}
-        className="min-h-[300px]"
-      >
-        <BarChart
-          accessibilityLayer
-          data={[
-            { month: "January", desktop: 186 },
-            { month: "February", desktop: 305 },
-            { month: "March", desktop: 237 },
-            { month: "April", desktop: 73 },
-            { month: "May", desktop: 209 },
-            { month: "June", desktop: 214 },
-          ]}
-        >
-          <CartesianGrid vertical={false} />
-          <XAxis
-            dataKey="month"
-            tickLine={false}
-            tickMargin={10}
-            axisLine={false}
-            tickFormatter={(value) => value.slice(0, 3)}
-          />
-          <ChartTooltip
-            cursor={false}
-            content={<ChartTooltipContent hideLabel />}
-          />
-          <Bar dataKey="desktop" fill="var(--color-desktop)" radius={8} />
-        </BarChart>
-      </ChartContainer>
-    </div>
-  );
-}
-
-function LineChartIcon(props: { className?: string }) {
+function FilePenIcon(props: { className: string }) {
   return (
     <svg
       {...props}
@@ -201,64 +189,14 @@ function LineChartIcon(props: { className?: string }) {
       strokeLinecap="round"
       strokeLinejoin="round"
     >
-      <path d="M3 3v18h18" />
-      <path d="m19 9-5 5-4-4-3 3" />
+      <path d="M12 22h6a2 2 0 0 0 2-2V7l-5-5H6a2 2 0 0 0-2 2v10" />
+      <path d="M14 2v4a2 2 0 0 0 2 2h4" />
+      <path d="M10.4 12.6a2 2 0 1 1 3 3L8 21l-4 1 1-4Z" />
     </svg>
   );
 }
 
-function LinechartChart(props: { className?: string }) {
-  return (
-    <div {...props}>
-      <ChartContainer
-        config={{
-          desktop: {
-            label: "Desktop",
-            color: "hsl(var(--chart-1))",
-          },
-        }}
-      >
-        <LineChart
-          accessibilityLayer
-          data={[
-            { month: "January", desktop: 186 },
-            { month: "February", desktop: 305 },
-            { month: "March", desktop: 237 },
-            { month: "April", desktop: 73 },
-            { month: "May", desktop: 209 },
-            { month: "June", desktop: 214 },
-          ]}
-          margin={{
-            left: 12,
-            right: 12,
-          }}
-        >
-          <CartesianGrid vertical={false} />
-          <XAxis
-            dataKey="month"
-            tickLine={false}
-            axisLine={false}
-            tickMargin={8}
-            tickFormatter={(value) => value.slice(0, 3)}
-          />
-          <ChartTooltip
-            cursor={false}
-            content={<ChartTooltipContent hideLabel />}
-          />
-          <Line
-            dataKey="desktop"
-            type="natural"
-            stroke="var(--color-desktop)"
-            strokeWidth={2}
-            dot={false}
-          />
-        </LineChart>
-      </ChartContainer>
-    </div>
-  );
-}
-
-function MoveHorizontalIcon(props: { className?: string }) {
+function FilterIcon(props: { className: string }) {
   return (
     <svg
       {...props}
@@ -272,50 +210,22 @@ function MoveHorizontalIcon(props: { className?: string }) {
       strokeLinecap="round"
       strokeLinejoin="round"
     >
-      <polyline points="18 8 22 12 18 16" />
-      <polyline points="6 8 2 12 6 16" />
-      <line x1="2" x2="22" y1="12" y2="12" />
+      <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3" />
     </svg>
   );
 }
 
-function Package2Icon(props: { className?: string }) {
+function AddIcon(props: { className: string }) {
   return (
     <svg
       {...props}
       xmlns="http://www.w3.org/2000/svg"
       width="24"
       height="24"
+      fill="#ffffff"
       viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
     >
-      <path d="M3 9h18v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V9Z" />
-      <path d="m3 9 2.45-4.9A2 2 0 0 1 7.24 3h9.52a2 2 0 0 1 1.8 1.1L21 9" />
-      <path d="M12 3v6" />
-    </svg>
-  );
-}
-
-function TrendingUpIcon(props: { className: string }) {
-  return (
-    <svg
-      {...props}
-      xmlns="http://www.w3.org/2000/svg"
-      width="24"
-      height="24"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      <polyline points="22 7 13.5 15.5 8.5 10.5 2 17" />
-      <polyline points="16 7 22 7 22 13" />
+      <path d="M24 10h-10v-10h-4v10h-10v4h10v10h4v-10h10z" />
     </svg>
   );
 }

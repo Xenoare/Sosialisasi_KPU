@@ -3,7 +3,6 @@ import {
   Auth,
   signInWithEmailAndPassword,
 } from "firebase/auth";
-
 import { auth } from "./clientApp";
 
 export function onAuthStateChanged(cb: (user: any) => void) {

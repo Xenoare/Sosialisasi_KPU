@@ -28,33 +28,26 @@ export default function NavLinks() {
   const pathname = usePathname();
   return (
     <>
-      {links.map(
-        (
-          link,
-          index // Use index as a key for now
-        ) => (
-          <Tooltip key={index}>
-            {" "}
-            {/* Add the key prop here */}
-            <TooltipTrigger asChild>
-              <Link
-                href={link.href}
-                className={clsx(
-                  "flex h-9 w-9 items-center justify-center rounded-lg bg-accent text-accent-foreground transition-colors hover:text-foreground md:h-8 md:w-8",
-                  {
-                    "bg-sky-400 text-blue-600": pathname === link.href,
-                  }
-                )}
-                prefetch={false}
-              >
-                {link.icon}
-                <span className="sr-only">{link.name}</span>
-              </Link>
-            </TooltipTrigger>
-            <TooltipContent side="right">{link.name}</TooltipContent>
-          </Tooltip>
-        )
-      )}
+      {links.map((link, index) => (
+        <Tooltip key={index}>
+          {" "}
+          <TooltipTrigger asChild>
+            <Link
+              href={link.href}
+              className={clsx(
+                "flex h-9 w-9 items-center justify-center rounded-lg bg-accent text-accent-foreground transition-colors hover:text-foreground md:h-8 md:w-8",
+                {
+                  "bg-sky-400 text-white": pathname === link.href,
+                }
+              )}
+            >
+              {link.icon}
+              <span className="sr-only">{link.name}</span>
+            </Link>
+          </TooltipTrigger>
+          <TooltipContent side="right">{link.name}</TooltipContent>
+        </Tooltip>
+      ))}
     </>
   );
 }

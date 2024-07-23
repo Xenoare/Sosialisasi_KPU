@@ -21,7 +21,7 @@ export default function Header() {
           Pilkada-101
         </Link>
         <Link
-          href="#"
+          href="/login"
           className="text-sm font-medium hover:underline underline-offset-4"
           prefetch={false}
         >

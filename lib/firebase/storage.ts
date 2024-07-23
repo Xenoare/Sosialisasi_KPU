@@ -2,7 +2,25 @@ import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 
 import { storage } from "./clientApp";
 
-export async function uploadLocationImage() {}
+export async function uploadLocationImage(
+  location: string,
+  image: File
+): Promise<string> {
+  try {
+    if (!location) {
+      throw new Error("No location is provided valid");
+    }
+    if (!image || !image.name) {
+      throw new Error("A valid image has not been provided.");
+    }
+
+    const publicImageUrl = await uploadImage(location, image);
+
+    return publicImageUrl;
+  } catch (error) {
+    throw error;
+  }
+}
 
 export async function updateLocationImage() {}
 
