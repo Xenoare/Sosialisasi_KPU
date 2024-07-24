@@ -21,11 +21,16 @@ import {
   getLocation,
   Location,
 } from "@/lib/firebase/firestore";
+import { useAuthState } from "react-firebase-hooks/auth";
+import { useRouter } from "next/navigation";
+import { auth } from "@/lib/firebase/clientApp";
 
 export default function Component() {
   const [locations, setLocations] = useState<Cities[]>([]);
   const [tempCity, setTempCity] = useState<string>("");
   const [subCollectionData, setSubCollectionData] = useState<Location[]>([]);
+  const [user] = useAuthState(auth);
+  const router = useRouter();
 
   useEffect(() => {
     const fetchLocations = async () => {
@@ -39,6 +44,10 @@ export default function Component() {
 
     fetchLocations();
   }, []);
+
+  if (!user) {
+    return router.push("/login");
+  }
 
   const handleLocationChange = async (selectedLocation: string) => {
     setTempCity(selectedLocation);

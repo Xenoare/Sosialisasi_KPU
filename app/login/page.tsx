@@ -82,10 +82,8 @@ export default function Component() {
     <div className="flex min-h-[100dvh] flex-col items-center justify-center bg-background px-4 py-12 sm:px-6 lg:px-8">
       <Card className="w-[350px]">
         <CardHeader>
-          <CardTitle>Create project</CardTitle>
-          <CardDescription>
-            Deploy your new project in one-click.
-          </CardDescription>
+          <CardTitle>Login</CardTitle>
+          <CardDescription>Login with credentials.</CardDescription>
         </CardHeader>
         <CardContent>
           <Form {...form}>
@@ -132,7 +130,7 @@ export default function Component() {
                 }}
               />
               <Button type="submit" className="w-full">
-                Submit
+                Login
               </Button>
             </form>
           </Form>

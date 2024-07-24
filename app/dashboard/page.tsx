@@ -40,11 +40,16 @@ import {
   getRecentLocation,
 } from "@/lib/firebase/firestore";
 import { useEffect, useState } from "react";
+import { useAuthState } from "react-firebase-hooks/auth";
+import { auth } from "@/lib/firebase/clientApp";
+import { useRouter } from "next/navigation";
 
 export default function Page() {
   const [location, setLocation] = useState<Location[]>([]);
   const [error, setError] = useState<Error | null>(null);
   const [totalCoklit, setTotalCoklit] = useState<number>(0);
+  const [user] = useAuthState(auth);
+  const router = useRouter();
 
   useEffect(() => {
     const fetchlocation = async () => {
@@ -64,6 +69,10 @@ export default function Page() {
     };
     fetchlocation();
   }, [totalCoklit]);
+
+  if (!user) {
+    return router.push("/login");
+  }
 
   return (
     <div className="flex min-h-screen w-full">

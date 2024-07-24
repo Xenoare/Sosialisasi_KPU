@@ -22,7 +22,6 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { useRouter } from "next/navigation";
 
 import SideNav from "@/components/dashboard/side-nav";
 import Header from "@/components/dashboard/header";
@@ -43,7 +42,9 @@ import { z } from "zod";
 import { uploadLocationData } from "@/lib/firebase/firestore";
 import { Timestamp } from "firebase/firestore";
 import { uploadLocationImage } from "@/lib/firebase/storage";
-import path from "path";
+import { useAuthState } from "react-firebase-hooks/auth";
+import { useRouter } from "next/navigation";
+import { auth } from "@/lib/firebase/clientApp";
 
 const MAX_FILE_SIZE = 5000000;
 const ACCEPTED_IMAGE_TYPES = [
@@ -85,6 +86,7 @@ export default function Page({
   const [location, setLocation] = useState<Cities[]>([]);
   const [post, setPost] = useState<Location>();
   const [currentCity, setCurrentCity] = useState<Cities>();
+  const [user] = useAuthState(auth);
   const router = useRouter();
 
   useEffect(() => {
@@ -106,6 +108,10 @@ export default function Page({
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
   });
+
+  if (!user) {
+    return router.push("/login");
+  }
 
   const fileRef = form.register("file");
 
