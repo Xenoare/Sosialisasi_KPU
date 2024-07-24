@@ -1,23 +1,22 @@
-// import { PencilIcon, PlusIcon, TrashIcon } from "@heroicons/react/24/outline";
+import {
+  deleteLocationData,
+  getCurrentCities,
+  getPost,
+  updateTotal,
+} from "@/lib/firebase/firestore";
 import Link from "next/link";
-// import { deleteInvoice } from "@/app/lib/actions";
+import { Button } from "./ui/button";
 
-export function CreateInvoice() {
+export function UpdateInvoice({
+  id,
+  path,
+}: {
+  id: string | undefined;
+  path: string | undefined;
+}) {
   return (
     <Link
-      href={`/dashboard/invoices/create`}
-      className="flex h-10 items-center rounded-lg bg-blue-600 px-4 text-sm font-medium text-white transition-colors hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600"
-    >
-      <span className="hidden md:block">Create Invoice</span>{" "}
-      {/* <PlusIcon className="h-5 md:ml-4" /> */}
-    </Link>
-  );
-}
-
-export function UpdateInvoice({ id }: { id: string }) {
-  return (
-    <Link
-      href={`/dashboard/invoices/${id}/edit`}
+      href={`/dashboard/history/${path}/${id}/edit`}
       className="rounded-md border p-2 hover:bg-gray-100"
     >
       <PencilIcon className="w-6" />
@@ -25,16 +24,31 @@ export function UpdateInvoice({ id }: { id: string }) {
   );
 }
 
-export function DeleteInvoice({ id }: { id: string }) {
-  //   const deleteInvoiceWithId = deleteInvoice.bind(null, id);
+export function DeleteInvoice({
+  id,
+  path,
+}: {
+  id: string | undefined;
+  path: string | undefined;
+}) {
+  const deletePost = async () => {
+    const currentCity = await getCurrentCities(path!!);
+    const post = await getPost(path!!, id!!);
 
+    const total_original_coklit_value =
+      currentCity?.current_coklit!! - post?.total!!;
+
+    await updateTotal(currentCity?.key!!, total_original_coklit_value);
+
+    await deleteLocationData(path!!, id!!);
+  };
   return (
     <>
-      <form>
-        <button className="rounded-md border p-2 hover:bg-gray-100">
+      <form onSubmit={deletePost}>
+        <Button type="submit" className="rounded-md border p-2 bg-white">
           <span className="sr-only">Delete</span>
           <TrashIcon className="w-6" />
-        </button>
+        </Button>
       </form>
     </>
   );

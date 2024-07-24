@@ -28,8 +28,10 @@ import SideNav from "@/components/dashboard/side-nav";
 import Header from "@/components/dashboard/header";
 import {
   Cities,
+  deleteLocationData,
   getAllLocations,
   getCurrentCities,
+  getPost,
   Location,
   updateTotal,
   uploadRecentData,
@@ -41,6 +43,7 @@ import { z } from "zod";
 import { uploadLocationData } from "@/lib/firebase/firestore";
 import { Timestamp } from "firebase/firestore";
 import { uploadLocationImage } from "@/lib/firebase/storage";
+import path from "path";
 
 const MAX_FILE_SIZE = 5000000;
 const ACCEPTED_IMAGE_TYPES = [
@@ -73,15 +76,26 @@ const formSchema = z.object({
     .min(5, { message: "Must be 5 or more characters long" }),
 });
 
-export default function Page() {
+export default function Page({
+  params,
+}: {
+  params: { location: string; id: string };
+}) {
+  console.log(params);
   const [location, setLocation] = useState<Cities[]>([]);
+  const [post, setPost] = useState<Location>();
+  const [currentCity, setCurrentCity] = useState<Cities>();
   const router = useRouter();
 
   useEffect(() => {
     const fetchlocation = async () => {
       try {
-        const fetchedLocation = await getAllLocations();
-        setLocation(fetchedLocation);
+        const fetchPosts = await getPost(params.location, params.id);
+        const fetchLocation = await getAllLocations();
+        const fetchCurrentCity = await getCurrentCities(params.location);
+        setCurrentCity(fetchCurrentCity);
+        setLocation(fetchLocation);
+        setPost(fetchPosts);
       } catch (error) {
         console.log(error);
       }
@@ -108,6 +122,12 @@ export default function Page() {
         timestamp: Timestamp.now().toDate().toDateString(),
       };
 
+      const total_original_coklit_value =
+        currentCity?.current_coklit!! - post?.total!!;
+      await updateTotal(currentCity?.key!!, total_original_coklit_value);
+      await deleteLocationData(params.location, params.id);
+
+      // Update the data
       const cities = await getCurrentCities(value.location);
       const temp_value = cities.current_coklit + value.total;
 
@@ -128,7 +148,7 @@ export default function Page() {
 
       <div className="flex flex-col gap-6 p-4 md:p-6 sm:ml-10">
         <div className="flex items-center justify-between">
-          <h1 className="text-2xl font-bold ml-2  ">Input Progress</h1>
+          <h1 className="text-2xl font-bold ml-2 ">Update Progress</h1>
         </div>
 
         <Card className="border-0 shadow-sm">
