@@ -95,11 +95,10 @@ export default function Page() {
     resolver: zodResolver(formSchema),
   });
 
-  useEffect(() => {
-    if (user == null) {
-      return router.push("/login");
-    }
-  }, []);
+  if (!user) {
+    return router.push("/login");
+  }
+
   const fileRef = form.register("file");
 
   const handleSubmit = async (value: z.infer<typeof formSchema>) => {
