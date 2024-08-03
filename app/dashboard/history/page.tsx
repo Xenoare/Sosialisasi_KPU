@@ -45,10 +45,11 @@ export default function Component() {
     fetchLocations();
   }, []);
 
-  if (!user) {
-    return router.push("/login");
-  }
-
+  useEffect(() => {
+    if (user == null) {
+      return router.push("/login");
+    }
+  }, []);
   const handleLocationChange = async (selectedLocation: string) => {
     setTempCity(selectedLocation);
     try {

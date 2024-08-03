@@ -4,6 +4,7 @@ import {
   getPost,
   updateTotal,
 } from "@/lib/firebase/firestore";
+import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { Button } from "./ui/button";
 
@@ -31,6 +32,7 @@ export function DeleteInvoice({
   id: string | undefined;
   path: string | undefined;
 }) {
+  const router = useRouter();
   const deletePost = async () => {
     const currentCity = await getCurrentCities(path!!);
     const post = await getPost(path!!, id!!);
@@ -41,6 +43,7 @@ export function DeleteInvoice({
     await updateTotal(currentCity?.key!!, total_original_coklit_value);
 
     await deleteLocationData(path!!, id!!);
+    router.push("/dashboard/history");
   };
   return (
     <>

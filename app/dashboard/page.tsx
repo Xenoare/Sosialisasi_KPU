@@ -70,10 +70,11 @@ export default function Page() {
     fetchlocation();
   }, [totalCoklit]);
 
-  if (!user) {
-    return router.push("/login");
-  }
-
+  useEffect(() => {
+    if (user == null) {
+      return router.push("/login");
+    }
+  }, []);
   return (
     <div className="flex min-h-screen w-full">
       <div className="flex flex-col w-full sm:gap-4 sm:py-4 sm:pl-14">

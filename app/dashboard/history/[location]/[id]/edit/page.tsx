@@ -109,9 +109,11 @@ export default function Page({
     resolver: zodResolver(formSchema),
   });
 
-  if (!user) {
-    return router.push("/login");
-  }
+  useEffect(() => {
+    if (user == null) {
+      return router.push("/login");
+    }
+  }, []);
 
   const fileRef = form.register("file");
 
